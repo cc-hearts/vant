@@ -1,6 +1,7 @@
 import {
   ref,
   reactive,
+  nextTick,
   defineComponent,
   onBeforeUnmount,
   type PropType,
@@ -378,6 +379,13 @@ export default defineComponent({
 
     const chooseFile = () => {
       if (inputRef.value && !props.disabled) {
+        if (props.multiple) {
+          const _multiple = inputRef.value.multiple;
+          inputRef.value.multiple = false;
+          nextTick(() => {
+            inputRef.value.multiple = _multiple;
+          });
+        }
         inputRef.value.click();
       }
     };
